@@ -1,38 +1,34 @@
- String answer = "";
+import java.util.*;
+
+class Solution {
+    public String solution(String X, String Y) {
+        String answer = "";
         StringBuilder sb = new StringBuilder();
-        
-        char[] xc = X.toCharArray();
-        char[] yc = Y.toCharArray();
-        Arrays.sort(xc);
-        Arrays.sort(yc);
-        X = String.valueOf(xc);
-        Y = String.valueOf(yc); 
-                
         String[] compareStr = {"0","1","2","3","4","5","6","7","8","9"};
-   
-        for(int i = 0; i<compareStr.length; i++) {
+        
+        for(int i = compareStr.length-1; i >= 0; i--) {
+            int x_target_num = X.length()-X.replaceAll(compareStr[i], "").length();
+            int y_target_num = Y.length()-Y.replaceAll(compareStr[i], "").length();
             
-            if(!(X.contains(compareStr[i]) && Y.contains(compareStr[i]))) {
+            if(x_target_num < 1 || y_target_num < 1) {
                 continue;
             }
             
-            int x_num = X.lastIndexOf(compareStr[i]) - X.indexOf(compareStr[i]);
-            int y_num = Y.lastIndexOf(compareStr[i]) - Y.indexOf(compareStr[i]);
-            
-            int repeatNum = 0;
-            if(x_num > y_num){
-                repeatNum  = y_num+1;
-            }else {
-                repeatNum  = x_num+1;
-            }
-            
-            sb.insert(0,compareStr[i].repeat(repeatNum)) ;
-            
-        }
+            if(x_target_num > y_target_num)       
+                sb.append(compareStr[i].repeat(y_target_num));
+            else 
+                sb.append(compareStr[i].repeat(x_target_num));
+                       
+        } 
         
         answer = sb.toString();
         if(answer.length() < 1) {
             return "-1";
         }
+        if(answer.substring(0, 1).equals("0")){
+            answer = "0";
+        }
         
-        return Integer.parseInt(answer) == 0? "0" : answer;
+        return  answer;
+    }
+}
